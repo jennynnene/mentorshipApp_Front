@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ⬅️ import navigate
+import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordRequest: React.FC = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); // ⬅️ initialize navigate
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,8 +19,9 @@ const ForgotPasswordRequest: React.FC = () => {
 
     setLoading(true);
     try {
+        const api_link= import.meta.env.VITE_API_LINK || import.meta.env.VITE_LOCALHOST
       const response = await fetch(
-        "http://localhost:3001/api/users/forgot-password/request",
+      `${api_link}/users/forgot-password/request`,
         {
           method: "POST",
           headers: {
@@ -30,9 +31,9 @@ const ForgotPasswordRequest: React.FC = () => {
         }
       );
 
-      // Regardless of response, redirect
+      
       if (response.ok) {
-        navigate("/password-reset-sent"); // ✅ redirect on success
+        navigate("/password-reset-sent");
       } else {
         const data = await response.json();
         setError(data.message || "Failed to send reset request.");
